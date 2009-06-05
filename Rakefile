@@ -17,10 +17,11 @@ require './lib/lazy_developer.rb'
 Hoe.new('lazy_developer', LazyDeveloper::VERSION) do |p|
   p.rubyforge_name = 'lazy_developer'
   p.developer('Brian Hogan', 'info@napcs.com')
-   p.remote_rdoc_dir = ''
-   p.history_file = "CHANGES"
-   p.readme_file = "README.rdoc"
-   p.summary = "Lazy Developer provides macros and scripts to make development of Rails applications easier."
+  p.remote_rdoc_dir = ''
+  p.history_file = "CHANGES"
+  p.readme_file= "README.rdoc"
+  p.extra_rdoc_files = FileList['*.rdoc']
+  p.summary = "Lazy Developer provides macros and scripts to make development of Rails applications easier."
 end
 
 task :gemspec do
