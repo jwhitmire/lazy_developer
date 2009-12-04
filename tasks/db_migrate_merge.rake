@@ -1,8 +1,6 @@
 require 'fileutils'
 namespace :db do
-  
   namespace :migrate do
-    
     desc "Uses schema.rb to build a new base migration with the timestamp of the current migration. Other migrations are   moved to a backup folder."
     task :compact => [:abort_if_pending_migrations, :environment] do 
       
@@ -67,7 +65,5 @@ end
     puts "Created #{new_file}."
     puts "Previous migrations are in #{backups}"
     end
-  
   end
-  
 end

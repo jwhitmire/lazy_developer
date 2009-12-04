@@ -1,8 +1,7 @@
 namespace :spec do
   require 'spec/rake/spectask' if defined? Spec::Rake::SpecTask
   spec_prereq = File.exist?(File.join(RAILS_ROOT, 'config', 'database.yml')) ? "db:test:prepare" : :noop
-  
-  
+
   [:models, :controllers, :views, :helpers, :lib].each do |sub|
     namespace sub do
       desc "RCov for #{sub}"
@@ -12,20 +11,20 @@ namespace :spec do
           t.spec_opts = ['--options', "\"#{RAILS_ROOT}/spec/spec.opts\""]
           t.spec_files = FileList["spec/#{sub}/**/*_spec.rb"]
           t.rcov = true
-          
+
           t.rcov_opts = lambda do
             reg_exp = []
             reg_exp << case sub.to_s
-                        when 'models'
-                           'app\/models'
-                        when 'views'
-                           'app\/views'
-                        when 'controllers'
-                           'app\/controllers'
-                        when 'helpers'
-                           'app\/helpers'
-                        when 'lib' 
-                          'lib'
+                       when 'models'
+                         'app\/models'
+                       when 'views'
+                         'app\/views'
+                       when 'controllers'
+                         'app\/controllers'
+                       when 'helpers'
+                         'app\/helpers'
+                       when 'lib'
+                         'lib'
                        end
             reg_exp.map!{ |m| "(#{m})" }
             rcov_opts = " -x \"^(?!#{reg_exp.join('|')})\""
@@ -33,13 +32,11 @@ namespace :spec do
           end
         end
       end
-
     end
   end
 end
 
 namespace :test do
-
   namespace :models do
     desc "Run unit tests, and determine coverage on models."
     task :rcov do
@@ -47,7 +44,7 @@ namespace :test do
       Rake::Task['test:units:rcov'].invoke
     end
   end
-  
+
   namespace :controllers do
     desc "Run functional tests, and determine coverage on controllers."
     task :rcov do
@@ -55,9 +52,8 @@ namespace :test do
       Rake::Task['test:functionals:rcov'].invoke
     end
   end
-  
+
   namespace :rcov do
-    
     # Runs all unit and functional tests, and determines
     # coverage on models and controllers respectively.
     desc "Run functional and unit tests, and get coverage for both."
@@ -65,9 +61,7 @@ namespace :test do
       Rake::Task['rcov:models'].invoke
       Rake::Task['rcov:controllers'].invoke
     end
-    
-    
-    
+
     # Runs all unit and functional tests, and determines
     # coverage on models and controllers respectively, ignoring errors.
     desc "Run functional and unit tests, and get coverage for both, ignoring errors."
@@ -95,7 +89,7 @@ namespace :test do
           File.open("coverage/report.html", "w") do |f|
         		f.puts to_write
         	end
-      	
+
         	if PLATFORM['darwin']
             system("open #{pwd}/coverage/report.html")
           end
@@ -103,34 +97,30 @@ namespace :test do
       end
     end
   end
-  
 end
 
-
 namespace :rcov do
-    
   # Runs all unit tests, and determines coverage
   # only on the model level.
   desc "Run unit tests, and determine coverage on models."
   task :models do
     Rake::Task['test:models:rcov'].invoke
   end
-    
+
   # Runs all functional tests, and determines coverage
   # only on the controller level.
   desc "Run functional tests, and determine coverage on controllers."
   task :controllers do
     Rake::Task['test:controllers:rcov'].invoke
   end
-  
+
   desc "Run functional and unit tests, and get coverage for both, ignoring errors."
   task :report do
     Rake::Task['test:rcov:report'].invoke
   end
-  
+
   desc "Run functional and unit tests, and get coverage for both."
   task :full do
     Rake::Task['test:rcov:full'].invoke
   end
-  
 end
