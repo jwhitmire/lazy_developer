@@ -19,12 +19,16 @@ namespace :git do
   desc "Commit all modified files and pull"
   task :cpull do
     `git commit -a -m #{ENV["M"]}`
-    `git pull origin master`
+    `git pull`
   end
 
-  desc "Commit all modified files and push"
+  desc "Commit all modified files and pull"
   task :commit do
     `git commit -a -m "#{ENV["M"]}"`
+  end
+
+  desc "Pull from origin/master"
+  task :master_pull do
     `git pull origin master`
   end
 
@@ -38,6 +42,11 @@ namespace :git do
     `git tag #{ENV["TAG"]}`
     `git push`
     `git push --tags`
+  end
+  
+  desc "check out a remote branch and set it up to track changes"
+  task :co_remote do
+    `git checkout -t origin/#{ENV["TAG"]}`
   end
 
   namespace :tags do
